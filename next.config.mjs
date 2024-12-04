@@ -4,6 +4,7 @@
 const nextConfig = {
     reactStrictMode: true,
     output: 'export',
+    trailingSlash: true,
     // Add your custom configuration here
   };
   
