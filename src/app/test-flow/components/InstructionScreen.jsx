@@ -9,47 +9,52 @@ export default function InstructionScreen({ onNext }) {
     const startCamera = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        videoRef.current.srcObject = stream;
+        if (videoRef.current) {
+          videoRef.current.srcObject = stream;
+        }
       } catch (error) {
         console.error("Error accessing camera:", error);
       }
     };
 
     startCamera();
+
+    // Optional cleanup if needed in the future
+    return () => {
+      if (videoRef.current && videoRef.current.srcObject) {
+        const tracks = videoRef.current.srcObject.getTracks();
+        tracks.forEach((track) => track.stop());
+      }
+    };
   }, []);
 
   return (
     <>
       <header className="header">
-          <div className="logo">Zeko</div>
-          <div className="timer">26 Minutes</div>
-        </header>
+        <div className="logo">Zeko</div>
+        <div className="timer">26 Minutes</div>
+      </header>
       <div className="instruction-screen">
-        
         <div className="video-container">
           <h1>Trainee Interview</h1>
-          <video
-            ref={videoRef}
-            autoPlay
-            className="video-feed"
-          ></video>
+          <video ref={videoRef} autoPlay className="video-feed"></video>
         </div>
 
-        
         <div className="instructions-container">
           <h1 className="instructions-header">Instructions</h1>
           <ol className="instructions-list">
-            <li>Ensure stable internet and choose a clean,quiet location.</li>
-            <li>permission for access of camera,microphone,entire screen sharing is recquired.</li>
+            <li>Ensure stable internet and choose a clean, quiet location.</li>
+            <li>
+              Permission for access to the camera, microphone, and entire screen sharing is required.
+            </li>
             <li>Be in professional attire and avoid distractions.</li>
-            <li>Give a detailed response,providing as musch information as you can.</li>
-            <li>Answer the question with examoles and projects you've worked on </li>
+            <li>Give a detailed response, providing as much information as you can.</li>
+            <li>
+              Answer the question with examples and projects you&apos;ve worked on.
+            </li>
           </ol>
-          
-          <button
-            className="start-test-button"
-            onClick={onNext}
-          >
+
+          <button className="start-test-button" onClick={onNext}>
             Start Test
           </button>
         </div>
@@ -89,16 +94,11 @@ export default function InstructionScreen({ onNext }) {
           margin-bottom: 32px; /* Increased margin */
         }
 
-        
-
         .instructions-list {
-          list-style-type: disc;
+          list-style-type: decimal;
           padding-left: 20px;
           color: white;
           margin-bottom: 24px;
-          list-style-type: decimal;
-          
-
         }
 
         .start-test-button {
@@ -113,6 +113,7 @@ export default function InstructionScreen({ onNext }) {
         .start-test-button:hover {
           background-color: #2563eb;
         }
+
         .header {
           display: flex;
           justify-content: space-between;
