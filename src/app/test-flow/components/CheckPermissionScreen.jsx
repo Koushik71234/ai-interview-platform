@@ -13,7 +13,10 @@ export default function InterviewScreen({ onNext }) {
 
   const checkPermissions = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
       setPermissions((prev) => ({ ...prev, camera: true, microphone: true }));
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
@@ -34,9 +37,11 @@ export default function InterviewScreen({ onNext }) {
   };
 
   useEffect(() => {
+    const videoElement = videoRef.current;
+
     return () => {
-      if (videoRef.current && videoRef.current.srcObject) {
-        const tracks = videoRef.current.srcObject.getTracks();
+      if (videoElement && videoElement.srcObject) {
+        const tracks = videoElement.srcObject.getTracks();
         tracks.forEach((track) => track.stop());
       }
     };
